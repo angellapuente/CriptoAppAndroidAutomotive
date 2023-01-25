@@ -39,7 +39,7 @@ class SignInActivity : AppCompatActivity() {
 */
 
         Toast.makeText(this, R.string.hello, Toast.LENGTH_SHORT).show()
-        finish()
+        //finish()
         /*
         viewModel.loggedIn.observe(this, Observer { loggedIn ->
             if (loggedIn == true) {

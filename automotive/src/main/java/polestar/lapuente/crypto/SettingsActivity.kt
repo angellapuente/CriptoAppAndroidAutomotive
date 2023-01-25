@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
 import okhttp3.*
+import org.json.JSONObject
 import java.io.IOException
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 class SettingsActivity : Activity() {
 
     private val client = OkHttpClient()
 
-
+private var price = String()
 
 
 
@@ -25,14 +28,18 @@ class SettingsActivity : Activity() {
         val handler = Handler()
         val delay = 10000 // 1000 milliseconds == 1 second
 
-val activity = this;
+        val activity = this;
         handler.postDelayed(object : Runnable {
             override fun run() {
-                println("myHandler: here!") // Do your work here
-                //https://api.blockchain.com/v3/#/unauthenticated/getTickerBySymbol
-                run("https://api.blockchain.com/v3/exchange/tickers/BTC-USD", activity)
+
+
+                    println("myHandler: here!") // Do your work here
+                    //https://api.blockchain.com/v3/#/unauthenticated/getTickerBySymbol
+                    run("https://api.blockchain.com/v3/exchange/tickers/BTC-USD", activity)
+
 
                 handler.postDelayed(this, delay.toLong())
+
             }
         }, delay.toLong())
 
@@ -53,23 +60,31 @@ val activity = this;
             override fun onFailure(call: Call, e: IOException) {}
             override fun onResponse(call: Call, response: Response)
             {
-                println(response.body()?.string());
+               // println(response.body()?.string())
 
-                val result = response.body()?.string()
+                val jsonObject = JSONObject(response.body()?.string())
 
-                //val answer = JSONObject(result)
+                println("price get $jsonObject")
+
+                price = jsonObject.get("last_trade_price").toString();
+
+                val num = price.toDouble();
+                val df = DecimalFormat("#,###")
+                df.roundingMode = RoundingMode.CEILING
+
+                price = df.format(num)
 
                 activity.runOnUiThread {
-                    Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()
+                    println("Toast runOnUiThread  $price")
+                    Toast.makeText(activity, "Bitcoin price: $$price", Toast.LENGTH_SHORT).show()
                 }
-
             }
+
 
         })
 
 
     }
-
 
 
     override fun onBackPressed() {

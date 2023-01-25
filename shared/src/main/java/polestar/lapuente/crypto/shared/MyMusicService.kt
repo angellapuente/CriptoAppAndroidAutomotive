@@ -60,7 +60,9 @@ class MyMusicService : MediaBrowserServiceCompat() {
     private lateinit var session: MediaSessionCompat
 
     private val callback = object : MediaSessionCompat.Callback() {
-        override fun onPlay() {}
+        override fun onPlay() {
+
+        }
 
         override fun onSkipToQueueItem(queueId: Long) {}
 
@@ -83,7 +85,9 @@ class MyMusicService : MediaBrowserServiceCompat() {
 
     override fun onCreate() {
         super.onCreate()
-        Toast.makeText(this, "HElloeeeeeeeeeeee", Toast.LENGTH_LONG).show()
+        //START HERE!!
+        // TODO: CHANGE TO MENSAGE APPLICATION!!!! because if not this is deactivated for other music app
+        Toast.makeText(this, "Starting app", Toast.LENGTH_LONG).show()
         session = MediaSessionCompat(this, "MyMusicService")
         sessionToken = session.sessionToken
         session.setCallback(callback)
